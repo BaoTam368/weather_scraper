@@ -13,7 +13,6 @@ public class WeatherScraper {
 
 			// Thứ, ngày tháng
 			String dayDate = doc.select(".subnav-pagination div").text();
-			String Phenomena = doc.select("div.current-weather div.phrase").text();
 
 			// Các thông số khác (Accuweather thường đặt trong class riêng, bạn cần test
 			// trực tiếp HTML)
@@ -27,15 +26,14 @@ public class WeatherScraper {
 			String visibility = doc.select("div:nth-of-type(10) div:nth-of-type(2)").text();
 			String ceiling = doc.select("div:nth-of-type(11) div:nth-of-type(2)").text();
 
-			System.out.println("Ngày giờ: " + dayDate);
-			System.out.println("UV Index: " + uvIndex);
-			System.out.println("Gió: " + wind);
-			System.out.println("Độ ẩm: " + humidity);
-			System.out.println("Điểm sương: " + dewPoint);
-			System.out.println("Khí áp: " + pressure);
-			System.out.println("Mật độ mây: " + cloudCover);
-			System.out.println("Tầm nhìn: " + visibility);
-			System.out.println("Trần mây: " + ceiling);
+			String logLine = String.format(
+					"%s | %s | Nhiệt độ: %s | UV: %s | Gió: %s | Độ ẩm: %s | Điểm sương: %s | Khí áp: %s | Mây: %s | Tầm nhìn: %s | Trần mây: %s",
+					LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), dayDate,
+					temperature, uvIndex, wind, humidity, dewPoint, pressure, cloudCover, visibility, ceiling);
+
+			try (FileWriter fw = new FileWriter("weather_log.txt", true); PrintWriter pw = new PrintWriter(fw)) {
+				pw.println(logLine);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
