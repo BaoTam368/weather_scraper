@@ -1,31 +1,41 @@
 name: Weather Scraper
 
-# Khi nào workflow chạy
 on:
   schedule:
     - cron: "0 0 * * *"   # chạy 7h sáng Việt Nam (0h UTC)
-  workflow_dispatch:       # cho phép chạy thủ công trên GitHub
+  workflow_dispatch:       # cho phép chạy thủ công
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # Bước 1: Lấy code từ repo
+      # 1️⃣ Lấy code từ repo
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # Bước 2: Cài đặt JDK 17
+      # 2️⃣ Cài đặt JDK
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # Bước 3: Build project bằng Maven
+      # 3️⃣ Build project bằng Maven
       - name: Build with Maven
         run: mvn compile
 
-      # Bước 4: Chạy class Java chính
+      # 4️⃣ Chạy class Java chính (WeatherScraper sẽ append dữ liệu vào weather_log.txt)
       - name: Run Weather Scraper
         run: mvn exec:java -Dexec.mainClass="weather_scraper.WeatherScraper"
+
+      # 5️⃣ Commit & push file weather_log.txt trở lại repo
+      - name: Commit weather log
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add weather_log.txt
+          git commit -m "Add daily weather log" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
