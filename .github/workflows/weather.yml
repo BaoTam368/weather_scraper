@@ -28,4 +28,4 @@ jobs:
 
       # Bước 4: Chạy class Java chính
       - name: Run Weather Scraper
-        run: mvn exec:java -Dexec.mainClass="com.example.WeatherScraper"
+        run: mvn exec:java -Dexec.mainClass="weather_scraper.WeatherScraper"
