@@ -3,4 +3,11 @@
   <groupId>com.example</groupId>
   <artifactId>weather_scraper</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+        <groupId>org.jsoup</groupId>
+        <artifactId>jsoup</artifactId>
+        <version>1.17.2</version>
+    </dependency>
+</dependencies>
 </project>
