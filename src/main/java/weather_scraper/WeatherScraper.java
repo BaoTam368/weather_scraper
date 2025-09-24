@@ -14,11 +14,15 @@ public class WeatherScraper {
 			Document doc = Jsoup.connect(url).get();
 
 			// Thứ, ngày tháng
-			String dayDate = doc.select(".subnav-pagination div").text();
+			String dayDate = doc.select("div.subnav-pagination div").text();
 
 			// Các thông số khác (Accuweather thường đặt trong class riêng, bạn cần test
 			// trực tiếp HTML)
-			String temperature = doc.select(".display-temp").text();
+			String tempRaw = doc.select("div.display-temp").first().ownText().replace("°", "");
+			double tempF = Double.parseDouble(tempRaw);
+			double tempC = (tempF - 32) * 5.0 / 9.0;
+			String temperature = String.format("%.1f°C", tempC);
+			
 			String uvIndex = doc.select(".detail-item:nth-of-type(3) div:nth-of-type(2)").text();
 			String wind = doc.select("div.detail-item:nth-of-type(4) div:nth-of-type(2)").text();
 			String humidity = doc.select("div.detail-item:nth-of-type(6) div:nth-of-type(2)").text();
