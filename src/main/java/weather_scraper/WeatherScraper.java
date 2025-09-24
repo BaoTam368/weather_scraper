@@ -19,7 +19,7 @@ public class WeatherScraper {
 			// Các thông số khác (Accuweather thường đặt trong class riêng, bạn cần test
 			// trực tiếp HTML)
 			String temperature = doc.select(".display-temp").text();
-			String uvIndex = doc.select("div.detail-item:nth-of-type(3) div:nth-of-type(2)").text();
+			String uvIndex = doc.select(".detail-item:nth-of-type(3) div:nth-of-type(2)").text();
 			String wind = doc.select("div.detail-item:nth-of-type(4) div:nth-of-type(2)").text();
 			String humidity = doc.select("div.detail-item:nth-of-type(6) div:nth-of-type(2)").text();
 			String dewPoint = doc.select("div.detail-item:nth-of-type(7) div:nth-of-type(2)").text();
