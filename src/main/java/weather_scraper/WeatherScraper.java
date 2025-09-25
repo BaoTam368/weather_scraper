@@ -1,11 +1,9 @@
 package weather_scraper;
 import java.io.*;
 import java.time.LocalDateTime;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.jsoup.*;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
