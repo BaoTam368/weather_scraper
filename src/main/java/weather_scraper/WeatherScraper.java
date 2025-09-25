@@ -10,7 +10,7 @@ import org.jsoup.nodes.Element;
 public class WeatherScraper {
 	public static void main(String[] args) {
 		try {
-			String url = "https://www.accuweather.com/vi/vn/ho-chi-minh-city/353981/current-weather/353981";
+			String url = "https://www.accuweather.com/vi/vn/ho-chi-minh-city/353981/current-weather/353981?unit=c";
 			Document doc = Jsoup.connect(url).get();
 
 			String dayDate = doc.select("div.subnav-pagination div").text();
