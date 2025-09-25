@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 
 import org.jsoup.*;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 public class WeatherScraper {
 	public static void main(String[] args) {
