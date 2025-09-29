@@ -2,3 +2,4 @@
 2025-09-26 01:09:50 | Thứ Sáu, 26 tháng 9 | Nhiệt độ: 26°C | UV: 0.6 (Thấp) | Gió: TTN 9 km/h | Độ ẩm: 94% | Điểm sương: 25° C | Khí áp: ↑ 1009 mb | Mây: 91% | Tầm nhìn: 16 km | Trần mây: 5500 m
 2025-09-27 01:06:42 | Thứ Bảy, 27 tháng 9 | Nhiệt độ: 25°C | UV: 0.3 (Thấp) | Gió: B 4 km/h | Độ ẩm: 94% | Điểm sương: 24° C | Khí áp: ↑ 1009 mb | Mây: 91% | Tầm nhìn: 16 km | Trần mây: 1100 m
 2025-09-28 01:16:39 | Chủ Nhật, 28 tháng 9 | Nhiệt độ: 26°C | UV: 0.4 (Thấp) | Gió: TTN 19 km/h | Độ ẩm: 94% | Điểm sương: 25° C | Khí áp: ↔ 1006 mb | Mây: 91% | Tầm nhìn: 16 km | Trần mây: 2100 m
+2025-09-29 01:11:43 | Thứ Hai, 29 tháng 9 | Nhiệt độ: 28°C | UV: 1.2 (Thấp) | Gió: N 11 km/h | Độ ẩm: 88% | Điểm sương: 26° C | Khí áp: ↑ 1008 mb | Mây: 0% | Tầm nhìn: 16 km | Trần mây: 1700 m
