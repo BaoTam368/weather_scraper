@@ -2,8 +2,8 @@ name: Weather Scraper
 
 on:
   schedule:
-    - cron: "0 0 * * *"   # chạy 7h sáng Việt Nam (0h UTC)
-  workflow_dispatch:       # cho phép chạy thủ công
+    - cron: "0 0 * * *"   
+  workflow_dispatch:       
 
 jobs:
   build:
