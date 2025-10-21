@@ -2,7 +2,7 @@ name: Weather Scraper
 
 on:
   schedule:
-    - cron: "0 0 * * *"   # chạy lúc 0h UTC (7h sáng VN)
+    - cron: "0 0 * * *"   # chạy 0h UTC (7h sáng VN)
   workflow_dispatch:
 
 jobs:
@@ -10,42 +10,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Lấy code từ repo
+      # 1️⃣ Lấy code
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # 2️⃣ Cài đặt JDK
+      # 2️⃣ Cài JDK
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # 3️⃣ Ghi log bắt đầu
-      - name: Start log
-        run: echo "=== Run started at $(date '+%Y-%m-%d %H:%M:%S') ===" >> run_log.txt
-
-      # 4️⃣ Build project bằng Maven
-      - name: Build with Maven
+      # 3️⃣ Build và chạy chương trình
+      - name: Build & Run Weather Scraper
+        id: run_scraper
         run: |
-          mvn compile >> run_log.txt 2>&1 || (echo "❌ Build failed at $(date)" >> run_log.txt && exit 1)
+          if mvn -q compile && mvn -q exec:java -Dexec.mainClass="weather_scraper.WeatherScraper"; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=failed" >> $GITHUB_OUTPUT
+          fi
 
-      # 5️⃣ Chạy chương trình chính
-      - name: Run Weather Scraper
+      # 4️⃣ Ghi dòng log gọn gàng
+      - name: Append daily run result to log
         run: |
-          mvn exec:java -Dexec.mainClass="weather_scraper.WeatherScraper" >> run_log.txt 2>&1 || (echo "❌ Run failed at $(date)" >> run_log.txt && exit 1)
+          DATE=$(date '+%Y-%m-%d %H:%M')
+          if [ "${{ steps.run_scraper.outputs.status }}" = "success" ]; then
+            echo "[$DATE] ✅ Thành công - Đã scrape dữ liệu thời tiết." >> run_log.txt
+          else
+            echo "[$DATE] ❌ Thất bại - Có lỗi khi chạy scraper." >> run_log.txt
+          fi
 
-      # 6️⃣ Ghi log hoàn thành
-      - name: Finish log
-        run: echo "✅ Run completed successfully at $(date '+%Y-%m-%d %H:%M:%S')" >> run_log.txt
-
-      # 7️⃣ Commit & push cả hai file
+      # 5️⃣ Commit lại 2 file
       - name: Commit results
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add weather_log.txt run_log.txt
-          git commit -m "Add daily weather and run logs" || echo "No changes to commit"
+          git commit -m "Add daily weather + run log" || echo "No changes to commit"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
