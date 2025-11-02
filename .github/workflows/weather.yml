@@ -21,27 +21,40 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # 3️⃣ Build và chạy chương trình
-      - name: Build & Run Weather Scraper
+      # 3️⃣ Build và chạy chương trình với retry tối đa 5 lần
+      - name: Build & Run Weather Scraper (max 5 retries)
         id: run_scraper
         run: |
-          if mvn -q compile && mvn -q exec:java -Dexec.mainClass="weather_scraper.WeatherScraper"; then
-            echo "status=success" >> $GITHUB_OUTPUT
-          else
-            echo "status=failed" >> $GITHUB_OUTPUT
-          fi
+          MAX_RETRIES=5
+          COUNT=1
+          STATUS="failed"
 
-      # 4️⃣ Ghi dòng log gọn gàng
+          while [ $COUNT -le $MAX_RETRIES ]; do
+            echo "🔁 Lần thử $COUNT / $MAX_RETRIES..."
+            if mvn -q compile && mvn -q exec:java -Dexec.mainClass="weather_scraper.WeatherScraper"; then
+              STATUS="success"
+              echo "✅ Thành công ở lần thử thứ $COUNT."
+              break
+            else
+              echo "⚠️ Thất bại lần $COUNT."
+              COUNT=$((COUNT+1))
+              sleep 5  # nghỉ 5 giây giữa các lần thử
+            fi
+          done
+
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+
+      # 4️⃣ Ghi log kết quả hàng ngày
       - name: Append daily run result to log
         run: |
           DATE=$(date '+%Y-%m-%d %H:%M')
           if [ "${{ steps.run_scraper.outputs.status }}" = "success" ]; then
             echo "[$DATE] ✅ Thành công - Đã scrape dữ liệu thời tiết." >> run_log.txt
           else
-            echo "[$DATE] ❌ Thất bại - Có lỗi khi chạy scraper." >> run_log.txt
+            echo "[$DATE] ❌ Thất bại sau 5 lần thử - Có lỗi khi chạy scraper." >> run_log.txt
           fi
 
-      # 5️⃣ Commit lại 2 file
+      # 5️⃣ Commit lại kết quả
       - name: Commit results
         run: |
           git config --global user.name "GitHub Actions"
