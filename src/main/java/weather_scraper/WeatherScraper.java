@@ -1,42 +1,51 @@
 package weather_scraper;
+
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import org.jsoup.*;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 public class WeatherScraper {
-	public static void main(String[] args) {
-		try {
-			String url = "https://www.accuweather.com/vi/vn/ho-chi-minh-city/353981/current-weather/353981?unit=c";
-			Document doc = Jsoup.connect(url).get();
+    public static void main(String[] args) {
+        String csvFile = "weather_log.csv";
+        boolean fileExists = new File(csvFile).exists();
 
-			String dayDate = doc.select("div.subnav-pagination div").text();
-			String temperature = doc.select("div.display-temp").text();
-			String uvIndex = doc.select("div.detail-item:nth-of-type(3) div:nth-of-type(2)").text();
-			String wind = doc.select("div.detail-item:nth-of-type(4) div:nth-of-type(2)").text();
-			String humidity = doc.select("div.detail-item:nth-of-type(6) div:nth-of-type(2)").text();
-			String dewPoint = doc.select("div.detail-item:nth-of-type(7) div:nth-of-type(2)").text();
-			String pressure = doc.select("div.detail-item:nth-of-type(8) div:nth-of-type(2)").text();
-			String cloudCover = doc.select("div.detail-item:nth-of-type(9) div:nth-of-type(2)").text();
-			String visibility = doc.select("div.detail-item:nth-of-type(10) div:nth-of-type(2)").text();
-			String ceiling = doc.select("div.detail-item:nth-of-type(11) div:nth-of-type(2)").text();
+        try {
+            String url = "https://www.accuweather.com/vi/vn/ho-chi-minh-city/353981/current-weather/353981?unit=c";
+            Document doc = Jsoup.connect(url).get();
 
-			String logLine = String.format(
-					"%s | %s | Nhiệt độ: %s | UV: %s | Gió: %s | Độ ẩm: %s | Điểm sương: %s | Khí áp: %s | Mây: %s | Tầm nhìn: %s | Trần mây: %s",
-					LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), dayDate,
-					temperature, uvIndex, wind, humidity, dewPoint, pressure, cloudCover, visibility, ceiling);
+            String dayDate = doc.select("div.subnav-pagination div").text();
+            String temperature = doc.select("div.display-temp").text();
+            String uvIndex = doc.select("div.detail-item:nth-of-type(3) div:nth-of-type(2)").text();
+            String wind = doc.select("div.detail-item:nth-of-type(4) div:nth-of-type(2)").text();
+            String humidity = doc.select("div.detail-item:nth-of-type(6) div:nth-of-type(2)").text();
+            String dewPoint = doc.select("div.detail-item:nth-of-type(7) div:nth-of-type(2)").text();
+            String pressure = doc.select("div.detail-item:nth-of-type(8) div:nth-of-type(2)").text();
+            String cloudCover = doc.select("div.detail-item:nth-of-type(9) div:nth-of-type(2)").text();
+            String visibility = doc.select("div.detail-item:nth-of-type(10) div:nth-of-type(2)").text();
+            String ceiling = doc.select("div.detail-item:nth-of-type(11) div:nth-of-type(2)").text();
 
-			try (FileWriter fw = new FileWriter("weather_log.txt", true); PrintWriter pw = new PrintWriter(fw)) {
-				pw.println(logLine);
-			}
+            // Định dạng thời gian hiện tại
+            String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
+            // Ghi file CSV
+            try (FileWriter fw = new FileWriter(csvFile, true);
+                 PrintWriter pw = new PrintWriter(fw)) {
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+                // Nếu file chưa tồn tại, thêm header
+                if (!fileExists) {
+                    pw.println("Thời gian,Ngày, Nhiệt độ,UV,Gió,Độ ẩm,Điểm sương,Khí áp,Mây,Tầm nhìn,Trần mây");
+                }
+
+                // Dòng dữ liệu
+                pw.printf("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s%n",
+                        time, dayDate, temperature, uvIndex, wind, humidity,
+                        dewPoint, pressure, cloudCover, visibility, ceiling);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
-
