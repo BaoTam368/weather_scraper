@@ -36,3 +36,4 @@
 2025-10-31 01:13:29 | Thứ Sáu, 31 tháng 10 | Nhiệt độ: 28°C | UV: 0.9 (Thấp) | Gió: ĐĐN 11 km/h | Độ ẩm: 94% | Điểm sương: 27° C | Khí áp: ↑ 1011 mb | Mây: 11% | Tầm nhìn: 16 km | Trần mây: 3400 m
 2025-11-01 01:17:46 | Thứ Bảy, 1 tháng 11 | Nhiệt độ: 27°C | UV: 0.3 (Thấp) | Gió: ĐB 7 km/h | Độ ẩm: 94% | Điểm sương: 26° C | Khí áp: ↑ 1012 mb | Mây: 76% | Tầm nhìn: 5 km | Trần mây: 100 m
 2025-11-02 01:18:20 | Chủ Nhật, 2 tháng 11 | Nhiệt độ: 26°C | UV: 0.5 (Thấp) | Gió: TB 7 km/h | Độ ẩm: 94% | Điểm sương: 25° C | Khí áp: ↑ 1011 mb | Mây: 45% | Tầm nhìn: 5 km | Trần mây: 300 m
+2025-11-03 01:17:13 | Thứ Hai, 3 tháng 11 | Nhiệt độ: 26°C | UV: 0.3 (Thấp) | Gió: B 2 km/h | Độ ẩm: 94% | Điểm sương: 25° C | Khí áp: ↑ 1010 mb | Mây: 90% | Tầm nhìn: 16 km | Trần mây: 900 m
