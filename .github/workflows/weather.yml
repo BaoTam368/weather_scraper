@@ -59,8 +59,9 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add weather_log.txt run_log.txt
-          git commit -m "Add daily weather + run log" || echo "No changes to commit"
+          git add weather_log.csv run_log.txt
+          git commit -m "Add daily weather data (CSV) + run log" || echo "No changes to commit"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
