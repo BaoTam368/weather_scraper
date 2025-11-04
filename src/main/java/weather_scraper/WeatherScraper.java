@@ -35,7 +35,7 @@ public class WeatherScraper {
 
                 // Nếu file chưa tồn tại, thêm header
                 if (!fileExists) {
-                    pw.println("Thời gian,Thứ,Ngày,Nhiệt độ,UV,Gió,Độ ẩm,Điểm sương,Khí áp,Mây,Tầm nhìn,Trần mây");
+                    pw.println("FullDate,Day,Temperature,UVValue,WindDirection,Humidity,DewPoint,Pressure,Cloud,Visibility,CloudCeiling");
                 }
 
                 // Dòng dữ liệu
