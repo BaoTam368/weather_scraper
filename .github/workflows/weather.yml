@@ -1,67 +1,67 @@
-name: Weather Scraper
+# name: Weather Scraper
 
-on:
-  schedule:
-    - cron: "0 0 * * *"   # chạy 0h UTC (7h sáng VN)
-  workflow_dispatch:
+# on:
+#   schedule:
+#     - cron: "0 0 * * *"   # chạy 0h UTC (7h sáng VN)
+#   workflow_dispatch:
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-    steps:
-      # 1️⃣ Lấy code
-      - name: Checkout repo
-        uses: actions/checkout@v3
+#     steps:
+#       # 1️⃣ Lấy code
+#       - name: Checkout repo
+#         uses: actions/checkout@v3
 
-      # 2️⃣ Cài JDK
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+#       # 2️⃣ Cài JDK
+#       - name: Set up JDK 17
+#         uses: actions/setup-java@v3
+#         with:
+#           java-version: '17'
+#           distribution: 'temurin'
 
-      # 3️⃣ Build và chạy chương trình với retry tối đa 5 lần
-      - name: Build & Run Weather Scraper (max 5 retries)
-        id: run_scraper
-        run: |
-          MAX_RETRIES=5
-          COUNT=1
-          STATUS="failed"
+#       # 3️⃣ Build và chạy chương trình với retry tối đa 5 lần
+#       - name: Build & Run Weather Scraper (max 5 retries)
+#         id: run_scraper
+#         run: |
+#           MAX_RETRIES=5
+#           COUNT=1
+#           STATUS="failed"
 
-          while [ $COUNT -le $MAX_RETRIES ]; do
-            echo "🔁 Lần thử $COUNT / $MAX_RETRIES..."
-            if mvn -q compile && mvn -q exec:java -Dexec.mainClass="weather_scraper.WeatherScraper"; then
-              STATUS="success"
-              echo "✅ Thành công ở lần thử thứ $COUNT."
-              break
-            else
-              echo "⚠️ Thất bại lần $COUNT."
-              COUNT=$((COUNT+1))
-              sleep 5  # nghỉ 5 giây giữa các lần thử
-            fi
-          done
+#           while [ $COUNT -le $MAX_RETRIES ]; do
+#             echo "🔁 Lần thử $COUNT / $MAX_RETRIES..."
+#             if mvn -q compile && mvn -q exec:java -Dexec.mainClass="weather_scraper.WeatherScraper"; then
+#               STATUS="success"
+#               echo "✅ Thành công ở lần thử thứ $COUNT."
+#               break
+#             else
+#               echo "⚠️ Thất bại lần $COUNT."
+#               COUNT=$((COUNT+1))
+#               sleep 5  # nghỉ 5 giây giữa các lần thử
+#             fi
+#           done
 
-          echo "status=$STATUS" >> $GITHUB_OUTPUT
+#           echo "status=$STATUS" >> $GITHUB_OUTPUT
 
-      # 4️⃣ Ghi log kết quả hàng ngày
-      - name: Append daily run result to log
-        run: |
-          DATE=$(date '+%Y-%m-%d %H:%M')
-          if [ "${{ steps.run_scraper.outputs.status }}" = "success" ]; then
-            echo "[$DATE] ✅ Thành công - Đã scrape dữ liệu thời tiết." >> run_log.txt
-          else
-            echo "[$DATE] ❌ Thất bại sau 5 lần thử - Có lỗi khi chạy scraper." >> run_log.txt
-          fi
+#       # 4️⃣ Ghi log kết quả hàng ngày
+#       - name: Append daily run result to log
+#         run: |
+#           DATE=$(date '+%Y-%m-%d %H:%M')
+#           if [ "${{ steps.run_scraper.outputs.status }}" = "success" ]; then
+#             echo "[$DATE] ✅ Thành công - Đã scrape dữ liệu thời tiết." >> run_log.txt
+#           else
+#             echo "[$DATE] ❌ Thất bại sau 5 lần thử - Có lỗi khi chạy scraper." >> run_log.txt
+#           fi
 
-      # 5️⃣ Commit lại kết quả
-      - name: Commit results
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add weather_log.csv run_log.txt
-          git commit -m "Add daily weather data (CSV) + run log" || echo "No changes to commit"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       # 5️⃣ Commit lại kết quả
+#       - name: Commit results
+#         run: |
+#           git config --global user.name "GitHub Actions"
+#           git config --global user.email "actions@github.com"
+#           git add weather_log.csv run_log.txt
+#           git commit -m "Add daily weather data (CSV) + run log" || echo "No changes to commit"
+#           git push
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
